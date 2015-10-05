@@ -1,0 +1,67 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Novo produto</ui:define>
+
+	<ui:define name="corpo">
+
+				<f:metadata>
+					<f:viewParam name="dymmi" />
+					<f:event listener="#{cadastroImovelBean.inicializar}"
+						type="preRenderView" />
+				</f:metadata>
+
+		<h:form>
+
+			<h1>Novo produto</h1>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 20px">
+				<p:toolbarGroup>
+					<p:button value="Novo" />
+					<p:commandButton value="Salvar" id="botaoSalvar"  />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisa" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" id="painel"
+				style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+				<p:outputLabel value="Nome do Imóvel" for="imovel" />
+				<p:inputText id="imovel" size="20" maxlength="20" />
+
+				<p:outputLabel value="Descrição do Imóvel" for="descimovel" />
+				<p:inputText id="descimovel" size="200" maxlength="255" />
+
+				<p:outputLabel value="Cidade" for="cidade" />
+				<p:selectOneMenu id="cidade" value="#{cadastroImovelBean.cidade}">
+				<p:ajax listener="#{cadastroImovelBean.onCidadeChange}" update="bairro" />
+					<f:selectItem itemLabel="Selecione a cidade do Imóvel" itemValue="" noSelectionOption="true"  />
+					<f:selectItems value="#{cadastroImovelBean.raizesCidades}" var="cidade"
+					 itemValue="#{cidade}"  itemLabel="#{cidade.nome}"/>
+				</p:selectOneMenu>
+				
+				<p:outputLabel value="Bairro" for="bairro" />
+				<p:selectOneMenu id="bairro"  value="#{cadastroImovelBean.imovel.bairro}">
+					<f:selectItem itemLabel="Selecione o bairro do Imóvel" />
+					<f:selectItems value="#{cadastroImovelBean.bairroPorCidade}" var="bairro"
+					 itemValue="#{bairro}"  itemLabel="#{bairro.nome}"/>
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Valor do Imóvel" for="valorUnitario" />
+				<p:inputText id="valorUnitario" size="10" maxlength="10"
+					styleClass="moeda">
+					<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+				</p:inputText>
+
+
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
